@@ -1,19 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
 import chalk from 'chalk';
+import dbconnect from './utils/db.js';
 
 dotenv.config();
-
-mongoose
-   .connect(
-      process.env.MONGO_CONNECTION_STRING,
-   ).then(() => {
-      console.log(chalk.yellow("Database Connected Successfully"));
-   }).catch((err) => {
-      console.log(chalk.red(err, 
-         '"Error while connecting to database"'));
-   });
+dbconnect();
 
 const app = express();
 
