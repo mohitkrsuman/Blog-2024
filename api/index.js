@@ -1,26 +1,20 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
 import chalk from 'chalk';
+import dbconnect from './utils/db.js';
+import userRoutes from './routes/user.route.js';
 
-dotenv.config();
-
-mongoose
-   .connect(
-      process.env.MONGO_CONNECTION_STRING,
-   ).then(() => {
-      console.log(chalk.yellow("Database Connected Successfully"));
-   }).catch((err) => {
-      console.log(chalk.red(err, 
-         '"Error while connecting to database"'));
-   });
-
+const port = process.env.PORT || 4000;
 const app = express();
 
-app.get('/', (req, res) =>{
-   res.send("Hello World");
-})
+dotenv.config();
+dbconnect();
 
-app.listen(3000, () => {
-   console.log(chalk.blue('Server is running on port 3000'));
+//The express. json() function is a middleware function used in Express. js applications to parse It is the process of converting a JSON string to a JSON object for data manipulation.
+app.use(express.json());
+
+app.use('/api', userRoutes);
+
+app.listen(port, () => {
+   console.log(chalk.blue(`Server is running on port ${port}`));
 }); 
